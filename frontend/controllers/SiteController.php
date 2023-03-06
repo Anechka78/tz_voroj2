@@ -15,6 +15,8 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use common\models\User;
+use Faker\Factory;
 
 /**
  * Site controller
@@ -256,4 +258,19 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
+	
+	public function actionGenerate()
+	{
+	  $faker = Factory::create();
+	  for ($i = 0; $i < 10; $i++) {
+		  $user = new User();
+		  $user->username = $faker->userName;
+		  $user->email = $faker->email;
+		  $user->password_hash = \Yii::$app->security->generatePasswordHash('password');
+          $user->created_at = $faker->unixTime();
+		  $user->save(false);
+        }	 
+	  
+	  die('Data generation is complete!');
+	}
 }
