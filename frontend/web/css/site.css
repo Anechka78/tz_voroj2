@@ -101,3 +101,9 @@ a.desc:after {
 {
     text-decoration: none;
 }
+
+#save-data-label{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
