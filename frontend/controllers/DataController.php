@@ -13,6 +13,10 @@ use yii\helpers\Json;
 use yii\web\Response;
 use stdClass;
 use yii\web\BadRequestHttpException;
+use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
+use yii\data\ActiveDataProvider;
 
 class DataController extends Controller
 {
@@ -47,6 +51,34 @@ class DataController extends Controller
 		return parent::beforeAction($action);
 	}
 
+
+	public function behaviors()
+	{
+		return [
+			'access' => [
+				'class' => AccessControl::className(),
+				'only' => ['put-data', 'save-data', 'update'],
+				'rules' => [
+					[
+						'allow' => true,
+						'actions' => ['put-data', 'save-data'],
+						'roles' => ['user', 'guest'],
+					],
+					[
+						'allow' => true,
+						'actions' => ['update'],
+						'roles' => ['user'],
+						'matchCallback' => function ($rule, $action) {
+							$id = Yii::$app->request->get('id');
+							$model = $this->findModel($id);
+							return $model->user_id === Yii::$app->user->id;
+						},
+					],
+				],
+			],
+		];
+	}
+
 	/**
      * Form for user input of data
      *
@@ -61,6 +93,24 @@ class DataController extends Controller
         ]);        
         
     }
+
+	public function actionView()
+	{
+		$user = Yii::$app->getUser();
+		if (!$user->can('view')) {
+			throw new ForbiddenHttpException('You are not allowed to perform this action.');
+		}
+		$query = Data::find();
+
+		$dataProvider = new ActiveDataProvider([
+			'query' => $query,
+		]);
+
+		return $this->render('viewdata', [
+			'dataProvider' => $dataProvider,
+		]);
+
+	}
 
 	/**
 	 * Form for user input of data
@@ -163,6 +213,22 @@ class DataController extends Controller
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Finds the Data model based on its primary key value.
+	 * If the model is not found, a 404 HTTP exception will be thrown.
+	 * @param integer $id
+	 * @return Data the loaded model
+	 * @throws NotFoundHttpException if the model cannot be found
+	 */
+	protected function findModel($id)
+	{
+		if (($model = Data::findOne($id)) !== null) {
+			return $model;
+		} else {
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
 	}
 
 }

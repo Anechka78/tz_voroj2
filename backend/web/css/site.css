@@ -88,3 +88,36 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.collapsed {
+    display: none;
+}
+.expand-collapse {
+    cursor: pointer;
+    color: rgb(13, 110, 253);
+    font-weight: 600;
+}
+
+.modal-v2 h4 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 24px;
+    color: #333333;
+}
+.modal-v2 .modal-header {
+    display: inline-block;
+}
+
+.pjax-delete{
+    margin-right: 5px;
+}
+
+.message_wrapper {
+    z-index: 999999;
+    cursor: default;
+    padding: 0;
+    position: fixed;
+    top: 50px;
+    width: 100%;
+}

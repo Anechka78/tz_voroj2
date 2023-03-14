@@ -107,3 +107,12 @@ a.desc:after {
 	flex-wrap: wrap;
 	justify-content: space-between;
 }
+
+.message_wrapper {
+    z-index: 999999;
+    cursor: default;
+    padding: 0;
+    position: fixed;
+    top: 50px;
+    width: 100%;
+}
