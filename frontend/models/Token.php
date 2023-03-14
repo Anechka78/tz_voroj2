@@ -46,16 +46,25 @@ class Token extends ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
-    
+
+
 
     /**
-     * @return bool Whether token has expired.
+     * Finds a token model by the specified token code.
+     *
+     * @param string $token the token code to look for.
+     * @return Token|false the token model, or false if not found or expired.
+     *
      */
-    public function getIsExpired()
+    public static function findByToken($token)
     {
-        return ($this->created_at + Token::TTL) < time();
-    }
+        $tokenModel = static::findOne(['code' => $token]);
+        if (!$tokenModel || ($tokenModel->created_at + Token::TTL) < time()) {
+            return false;
+        }
+        return $tokenModel;
 
+    }
     
 
     /** @inheritdoc */

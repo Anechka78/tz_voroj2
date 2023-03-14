@@ -12,9 +12,41 @@ use Faker\Factory;
 use yii\helpers\Json;
 use yii\web\Response;
 use stdClass;
+use yii\web\BadRequestHttpException;
 
 class DataController extends Controller
 {
+	/** @var Token */
+	private $_token;
+
+	public function beforeAction($action)
+	{
+		if ($action->id == 'save-data') {
+			$authHeader = Yii::$app->request->headers->get('Authorization');
+			if ($authHeader !== null) {
+				$authData = explode(' ', $authHeader);
+				if (count($authData) === 2 && $authData[0] === 'Bearer') {
+					$token = Token::findByToken($authData[1]);
+					if($token instanceof Token){
+						if (!Yii::$app->getUser()->getIsGuest()) {
+							$user = Yii::$app->getUser();
+							if($user->id != $token->user_id){
+								throw new \yii\web\UnauthorizedHttpException('You do not have permission to use this token. Please request your own.');
+							}
+						}
+						$this->_token = $token;
+						return parent::beforeAction($action);
+					}
+				}
+			}
+
+			throw new \yii\web\UnauthorizedHttpException('Your token is invalid or outdated. Please request a new one.');
+		}
+
+
+		return parent::beforeAction($action);
+	}
+
 	/**
      * Form for user input of data
      *
@@ -29,6 +61,55 @@ class DataController extends Controller
         ]);        
         
     }
+
+	/**
+	 * Form for user input of data
+	 *
+	 * @return DataForm
+	 */
+	public function actionSaveData()
+	{
+		Yii::$app->response->format = Response::FORMAT_JSON;
+		$model = new DataForm();
+
+		if(!Yii::$app->request->isAjax){
+			throw new BadRequestHttpException('Invalid request format. This action allow only ajaxRequest.');
+		}
+		$data = '';
+
+		if (Yii::$app->request->isPost) {
+			$data = Yii::$app->request->post();
+		}elseif(Yii::$app->request->isGet){
+			$getData = Yii::$app->request->get();
+			$data = isset($getData['data']) ? json_decode($getData['data']) : null;
+		}
+
+		/** @var User $user */
+		$user = User::find()->where('id = :id', [':id' => $this->_token->id])->one();
+		$model->token = $this->_token->code;
+		$model->data = $data;
+
+		if ($model->validate()) {
+			$info = $model->savedata($user->id);
+			Yii::$app->response->statusCode = 201;
+			$memory_usage = memory_get_peak_usage(true);
+			$time_usage = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
+			return [
+				'status' => 'success',
+				'message' => 'Data has been saved successfully',
+				'id' => $info,
+				'time_usage' => $time_usage,
+				'memory_usage' => $memory_usage,
+			];
+		} else {
+			Yii::$app->response->statusCode = 400;
+			return [
+				'status' => 'error',
+				'message' => 'Data validation failed',
+				'errors' => $model->getErrors()
+			];
+		}
+	}
 	
 	/**
      * Create random JSON obj

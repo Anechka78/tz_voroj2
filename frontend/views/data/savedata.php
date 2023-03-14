@@ -19,10 +19,12 @@ $this->params['breadcrumbs'][] = $this->title;
 		<div class="col-lg-6">
 
 	<?php $form = ActiveForm::begin([
-		'action' => '/data/send-data'
+		'action' => '#',
+		'options' => ['id' => 'send-data-form'],
 		]) ?>
-		<?= $form->field($model, 'type_request')->radioList(['GET' => 'GET', 'POST' => 'POST']) ?>
-		<?= $form->field($model, 'token')->textInput(['placeholder' => 'Enter authorization key']) ?>
+		<?php $model->type_request = 'GET';?>
+		<?=  $form->field($model, 'type_request')->radioList(['GET' => 'GET', 'POST' => 'POST']) ?>
+		<?= $form->field($model, 'token')->textInput(['placeholder' => 'Enter authorization key', 'required'=> 'true']) ?>
 		<?= $form->field($model, 'data')
 		->textarea(['rows' => 6, "id" => "data-textarea"])
 		->label(Html::tag("span", 'Enter the data manually', ["id" => "save-data-span"]) . ' ' . Html::a('Create a random JSON object', '#', ['class' => 'btn btn-primary', 'id' => 'create-fake-data-btn', 'style' => 'font-weight: bold']), ['id' => 'save-data-label']); ?>
@@ -38,8 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $js = <<<HERE
 $(function() {
     $(document).on("click", "#create-fake-data-btn", function (e) {		
-        e.preventDefault(); 
-                
+        e.preventDefault();
         $.ajax({
             url: '/data/create-data',
             type: 'POST',
@@ -47,11 +48,69 @@ $(function() {
             dataType: 'json',            
             success: function(res) {
 				if(typeof(res.data) != 'undefined') {
-					$('#data-textarea').text(res.data);
+					$('#data-textarea').val(res.data);
 				}
             }
         });
     });
+
+    $('body').on('submit', '#send-data-form', function(event) {
+		event.preventDefault();
+		const url = '/data/save-data';
+		var method = $('input[name="DataForm[type_request]"]:checked').val();
+		const token = $('#send-data-form input[name="DataForm[token]"]').val();
+		var data = $('#send-data-form textarea[name="DataForm[data]"]').val();
+
+		try {
+			const jsonObject = JSON.parse(data);
+		} catch (error) {
+			if(!((typeof data == 'string') && (data.length === 0))){
+				message('error', 'Invalid data format. The variable does not contain a JSON object');
+				$('#data-textarea').removeClass('is-valid');
+				$('#data-textarea').val('');
+				return false;
+			}
+		}
+		data = JSON.stringify(data);
+
+		const headers = {
+		  'Authorization': 'Bearer '+token,
+		  'Content-Type': 'application/json'
+		};
+
+		if(method == 'POST'){
+			$.ajax({
+			  url: url,
+			  type: method,
+			  data: data,
+			  dataType: 'json',
+			  headers: headers,
+			  success: function(resp) {
+				message('success', resp.message+' id='+resp.id+' time_usage='+resp.time_usage+' memory_usage='+resp.memory_usage);
+			  },
+			  error: function(xhr, status, error) {
+				console.log('Request failed.  Returned status of ' + xhr.status);
+				message('error', xhr.responseText);
+			  }
+			});
+		}else if(method == 'GET'){
+			$.ajax({
+			  url: url +'?data='+ encodeURIComponent(data),
+			  type: method,
+			  dataType: 'json',
+			  headers: headers,
+			  success: function(resp) {
+				message('success', resp.message+' id='+resp.id+' time_usage='+resp.time_usage+' memory_usage='+resp.memory_usage);
+			  },
+			  error: function(xhr, status, error) {
+				console.log('Request failed.  Returned status of ' + xhr.status);
+				message('error', xhr.responseText);
+			  }
+			});
+		}
+	});
+
+
 });
 HERE;
 
