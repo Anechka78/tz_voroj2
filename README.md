@@ -108,7 +108,7 @@ If necessary, edit the init() method in RbacController beforehand.</p>
 <ul>
     <li>select the request type</li>
     <li>enter the access token from p2</li>
-    <li>enter or generate a JSON object
+    <li>enter or generate a JSON object<br>
     <b>example JSON object:</b>
     {"name":"Dr. Hassan Hill III","email":"deron70@kassulke.info","age":99,"address":{"street":"89811 Mayer Skyway","city":"East Edaburgh","state":"North Carolina","zip":"22367","phone":"1-202-262-3675","nested_array":{"illum":{"voluptas":{"odit":70,"aspernatur":"consequatur","dolor":95}},"pariatur":{"sunt":{"in":"nam","corrupti":"consequatur"},"id":{"laborum":27},"consequatur":{"quam":"tempora","qui":99},"unde":{"sunt":"suscipit"}},"ullam":{"voluptatibus":{"qui":"voluptates","quidem":44},"et":{"soluta":"aspernatur","enim":25,"vero":81,"quam":"temporibus","eveniet":"repudiandae"}},"ipsum":{"numquam":{"et":99,"asperiores":"laboriosam","harum":45},"tenetur":{"aperiam":56,"perspiciatis":12,"itaque":94,"perferendis":"tempore","ut":87},"quis":{"dolor":"rerum","earum":"est","fugiat":"officia","non":95},"asperiores":{"aut":40}}}}}</li>
 </ul>
@@ -120,7 +120,7 @@ Then, submit the data.
     <li>select the request type</li>
     <li>enter the identifier of the record to modify</li>
     <li>enter the access token from p2</li>
-    <li>enter the code to modify the JSON object in the format
+    <li>enter the code to modify the JSON object in the format<br>
     <b>example code:</b>
         $data->name = "John Smith";
         $data->age = 35;
