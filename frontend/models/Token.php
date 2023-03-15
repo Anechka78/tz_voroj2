@@ -21,7 +21,7 @@ use common\models\User;
 class Token extends ActiveRecord
 {
     /** @const int Срок кодности токена */
-    const TTL = 8640000; // todo изменить на 300 после написания обвязки  
+    const TTL = 300;
 
     /** @const int Тип токена "Аутентификация" */
     const TYPE_ACCESS = 0;
