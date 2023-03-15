@@ -14,6 +14,7 @@ class DataForm extends Model
     public $token;
     public $type_request;
     public $data;
+    public $id;
 
 
     /**
@@ -25,8 +26,20 @@ class DataForm extends Model
             ['token', 'trim'],
             ['token', 'required'],
 			[['token', 'data'], 'string'],
-            ['data', 'safe'],
+            [['id', 'data'], 'safe'],
             [['type_request'], 'in', 'range' => ['GET', 'POST']],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'token' => 'Token',
+            'id' => 'ID',
+            'type_request' => 'Type Request'
         ];
     }
 
@@ -40,5 +53,20 @@ class DataForm extends Model
 
          return $id;
      }
+
+    public function updatedata()
+    {
+        /** @var Data $model */
+        $model = Data::findOne($this->id);
+        $code = $this->data;
+        $data = json_decode($model->data);
+        eval($code);
+        $model->data = json_encode($data);
+        if($model->update(false, ['data'])){
+            return true;
+        }
+        return false;
+    }
+
 
 }

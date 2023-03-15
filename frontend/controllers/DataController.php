@@ -25,7 +25,8 @@ class DataController extends Controller
 
 	public function beforeAction($action)
 	{
-		if ($action->id == 'save-data') {
+		$action_arr = ['save-data', 'update-data'];
+		if (in_array($action->id, $action_arr)) {
 			$authHeader = Yii::$app->request->headers->get('Authorization');
 			if ($authHeader !== null) {
 				$authData = explode(' ', $authHeader);
@@ -57,7 +58,7 @@ class DataController extends Controller
 		return [
 			'access' => [
 				'class' => AccessControl::className(),
-				'only' => ['put-data', 'save-data', 'update'],
+				'only' => ['put-data', 'save-data', 'update-data'],
 				'rules' => [
 					[
 						'allow' => true,
@@ -66,12 +67,23 @@ class DataController extends Controller
 					],
 					[
 						'allow' => true,
-						'actions' => ['update'],
-						'roles' => ['user'],
+						'actions' => ['update-data'],
+						'roles' => ['user', 'guest'],
 						'matchCallback' => function ($rule, $action) {
-							$id = Yii::$app->request->get('id');
+							$id = null;
+							if (Yii::$app->request->isPost) {
+								$postData = Yii::$app->request->post();
+								$id = $postData['id'];
+							}elseif(Yii::$app->request->isGet){
+								$getData = Yii::$app->request->get();
+								$id = isset($getData['id']) ? $getData['id'] : null;
+							}
 							$model = $this->findModel($id);
-							return $model->user_id === Yii::$app->user->id;
+							if($model->user_id !== $this->_token->user_id){
+								throw new \yii\web\ForbiddenHttpException('You do not have permission to edit this object');
+							} else {
+								return true;
+							}
 						},
 					],
 				],
@@ -93,6 +105,21 @@ class DataController extends Controller
         ]);        
         
     }
+
+	/**
+	 * Form for user update of data
+	 *
+	 * @return DataForm
+	 */
+	public function actionPutUpdateData()
+	{
+		$data = new DataForm();
+
+		return $this->render('updatedata', [
+			'model' => $data,
+		]);
+
+	}
 
 	public function actionView()
 	{
@@ -135,7 +162,7 @@ class DataController extends Controller
 		}
 
 		/** @var User $user */
-		$user = User::find()->where('id = :id', [':id' => $this->_token->id])->one();
+		$user = User::find()->where('id = :id', [':id' => $this->_token->user_id])->one();
 		$model->token = $this->_token->code;
 		$model->data = $data;
 
@@ -151,6 +178,72 @@ class DataController extends Controller
 				'time_usage' => $time_usage,
 				'memory_usage' => $memory_usage,
 			];
+		} else {
+			Yii::$app->response->statusCode = 400;
+			return [
+				'status' => 'error',
+				'message' => 'Data validation failed',
+				'errors' => $model->getErrors()
+			];
+		}
+	}
+
+	/**
+	 * Update own data by user
+	 *
+	 * @return array
+	 */
+	public function actionUpdateData()
+	{
+		Yii::$app->response->format = Response::FORMAT_JSON;
+		$model = new DataForm();
+
+		if(!Yii::$app->request->isAjax){
+			throw new BadRequestHttpException('Invalid request format. This action allow only ajaxRequest.');
+		}
+		$data = '';
+		$id = null;
+		if (Yii::$app->request->isPost) {
+			$postData = Yii::$app->request->post();
+			$data = json_decode($postData['code']);
+			$id = $postData['id'];
+		}elseif(Yii::$app->request->isGet){
+			$getData = Yii::$app->request->get();
+			$data = isset($getData['code']) ? json_decode($getData['code']) : null;
+			$id = $getData['id'];
+		}
+
+		if(empty(trim($data))){
+			Yii::$app->response->statusCode = 201;
+
+			return [
+				'status' => 'success',
+				'message' => 'Nothing to update'
+			];
+		}
+
+		$model->token = $this->_token->code;
+		$model->data = $data;
+		$model->id = $id;
+
+		if ($model->validate()) {
+			$info = $model->updatedata();
+			if($info){
+				Yii::$app->response->statusCode = 201;
+
+				return [
+					'status' => 'success',
+					'message' => 'Data has been updated successfully'
+				];
+			}else{
+				Yii::$app->response->statusCode = 500;
+
+				return [
+					'status' => 'error',
+					'message' => 'Failed to update data'
+				];
+			}
+
 		} else {
 			Yii::$app->response->statusCode = 400;
 			return [
