@@ -97,13 +97,14 @@ Change the configuration settings in these files according to your local configu
 
 <h1>Project functionality</h1>
 
-p1. Generate users using the command: https://tz_voroj2.loc/site/generate
+<p>p1. Generate users using the command: https://tz_voroj2.loc/site/generate</p>
 <p>Create a database for RBAC: ./yii migrate --migrationPath=@yii/rbac/migrations/</p>
 <p>Create roles and access rights in the console: ./yii rbac/init<br>
 If necessary, edit the init() method in RbacController beforehand.</p>
 
-p.2 Log in through the console using the command (./yii cron/get-token sullrich password), where 'sullrich' is the login and 'password' is the user's password, the script returns a token that is valid for 5 minutes.
-p3. Open the frontend part of the site in a browser, go to the data entry section https://tz_voroj2.loc/data/put-data
+<p>p.2 Log in through the console using the command (./yii cron/get-token sullrich password), where 'sullrich' is the login and 'password' is the user's password, the script returns a token that is valid for 5 minutes.</p>
+
+<p>p3. Open the frontend part of the site in a browser, go to the data entry section https://tz_voroj2.loc/data/put-data</p>
 <ul>
     <li>select the request type</li>
     <li>enter the access token from p2</li>
@@ -114,7 +115,7 @@ p3. Open the frontend part of the site in a browser, go to the data entry sectio
 Then, submit the data.
 <p>The response will either contain an error message with its description and code or a success message with the record ID, script execution time, and memory usage for the operation.</p>
 
-p4. Open the frontend part of the site in a browser, go to the data update section https://tz_voroj2.loc/data/put-update-data
+<p>p4. Open the frontend part of the site in a browser, go to the data update section https://tz_voroj2.loc/data/put-update-data</p>
 <ul>
     <li>select the request type</li>
     <li>enter the identifier of the record to modify</li>
@@ -128,7 +129,7 @@ p4. Open the frontend part of the site in a browser, go to the data update secti
 	Execute a request.
 <p>In response, a message with an error description and code or a success message is received.</p>
 
-p5. Open the backend part of the site in a browser, authorize with administrator rights, go to the data viewing section https://admin.tz_voroj2.loc/data/view/
+<p>p5. Open the backend part of the site in a browser, authorize with administrator rights, go to the data viewing section https://admin.tz_voroj2.loc/data/view/</p>
 
     To view the tree structure of a JSON object, click the eye icon. In the viewing mode, it is possible to collapse/expand individual elements.
     To delete a JSON object, click the trash can icon.
