@@ -107,27 +107,27 @@ p3. Open the frontend part of the site in a browser, go to the data entry sectio
     <li>select the request type</li>
     <li>enter the access token from p2</li>
     <li>enter or generate a JSON object
-    example JSON object:
+    <b>example JSON object:</b>
     {"name":"Dr. Hassan Hill III","email":"deron70@kassulke.info","age":99,"address":{"street":"89811 Mayer Skyway","city":"East Edaburgh","state":"North Carolina","zip":"22367","phone":"1-202-262-3675","nested_array":{"illum":{"voluptas":{"odit":70,"aspernatur":"consequatur","dolor":95}},"pariatur":{"sunt":{"in":"nam","corrupti":"consequatur"},"id":{"laborum":27},"consequatur":{"quam":"tempora","qui":99},"unde":{"sunt":"suscipit"}},"ullam":{"voluptatibus":{"qui":"voluptates","quidem":44},"et":{"soluta":"aspernatur","enim":25,"vero":81,"quam":"temporibus","eveniet":"repudiandae"}},"ipsum":{"numquam":{"et":99,"asperiores":"laboriosam","harum":45},"tenetur":{"aperiam":56,"perspiciatis":12,"itaque":94,"perferendis":"tempore","ut":87},"quis":{"dolor":"rerum","earum":"est","fugiat":"officia","non":95},"asperiores":{"aut":40}}}}}</li>
 </ul>
 Then, submit the data.
-The response will either contain an error message with its description and code or a success message with the record ID, script execution time, and memory usage for the operation.
+<p>The response will either contain an error message with its description and code or a success message with the record ID, script execution time, and memory usage for the operation.</p>
 
 p4. Open the frontend part of the site in a browser, go to the data update section https://tz_voroj2.loc/data/put-update-data
-
-    select the request type
-    enter the identifier of the record to modify
-    enter the access token from p2
-    enter the code to modify the JSON object in the format
-    example code:
+<ul>
+    <li>select the request type</li>
+    <li>enter the identifier of the record to modify</li>
+    <li>enter the access token from p2</li>
+    <li>enter the code to modify the JSON object in the format
+    <b>example code:</b>
         $data->name = "John Smith";
         $data->age = 35;
-        $data->address->street = "123 Main St";
-	
+        $data->address->street = "123 Main St";</li>
+</ul>	
 	Execute a request.
-In response, a message with an error description and code or a success message is received.
+<p>In response, a message with an error description and code or a success message is received.</p>
 
 p5. Open the backend part of the site in a browser, authorize with administrator rights, go to the data viewing section https://admin.tz_voroj2.loc/data/view/
 
-    To view the tree structure of a JSON object, click the eye icon. In the viewing mode, it is possible to collapse/expand individual elements.
-    To delete a JSON object, click the trash can icon.
+    <p>To view the tree structure of a JSON object, click the eye icon. In the viewing mode, it is possible to collapse/expand individual elements.</p>
+    <p>To delete a JSON object, click the trash can icon.</p>
