@@ -55,7 +55,7 @@ Pjax::end();
 Modal::end();
 $js = <<<HERE
 $(function() {
-	$(".expand-collapse").on("click", function () {
+	$("body").on("click", ".expand-collapse", function () {
 		let parentLi = $(this).parent("li");
 		let isExpanded = parentLi.hasClass("expanded");
 		parentLi.toggleClass("expanded");
