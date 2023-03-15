@@ -3,7 +3,7 @@ Make sure that your local server has PHP version 5.4.0 or higher and Composer in
 Create an empty folder for the project on your local server (tz_voroj2).
 
 Create an nginx configuration file.
-<b>Example:<b>
+<b>Example:</b>
 
 server {
 	listen   80;
