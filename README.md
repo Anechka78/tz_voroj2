@@ -86,7 +86,8 @@ server {
 <p>Create a database and privileges</p>
 <p>Clone the Yii2 project repository from GitHub to the created folder tz_voroj2 using the command: git clone https://github.com/Anechka78/tz_voroj2.git</p>
 
-In the console, go to the project's root folder and install the dependencies using the Composer command: composer install
+<p>In the console, go to the project's root folder and install the dependencies using the Composer command: composer install</p>
+
 In the configuration folders backend, frontend, and common, rename the files codeception-local.sample.php, main-local.sample.php, params-local.sample.php, test-local.sample.php, to codeception-local.php, main-local.php, params-local.php, test-local.php.
 Change the configuration settings in these files according to your local configuration.
 
@@ -129,5 +130,5 @@ p4. Open the frontend part of the site in a browser, go to the data update secti
 
 p5. Open the backend part of the site in a browser, authorize with administrator rights, go to the data viewing section https://admin.tz_voroj2.loc/data/view/
 
-    <p>To view the tree structure of a JSON object, click the eye icon. In the viewing mode, it is possible to collapse/expand individual elements.</p>
-    <p>To delete a JSON object, click the trash can icon.</p>
+    To view the tree structure of a JSON object, click the eye icon. In the viewing mode, it is possible to collapse/expand individual elements.
+    To delete a JSON object, click the trash can icon.
