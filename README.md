@@ -98,9 +98,9 @@ Change the configuration settings in these files according to your local configu
 <h1>Project functionality</h1>
 
 p1. Generate users using the command: https://tz_voroj2.loc/site/generate
-Create a database for RBAC: ./yii migrate --migrationPath=@yii/rbac/migrations/
-Create roles and access rights in the console: ./yii rbac/init
-If necessary, edit the init() method in RbacController beforehand.
+<p>Create a database for RBAC: ./yii migrate --migrationPath=@yii/rbac/migrations/</p>
+<p>Create roles and access rights in the console: ./yii rbac/init<br>
+If necessary, edit the init() method in RbacController beforehand.</p>
 
 p.2 Log in through the console using the command (./yii cron/get-token sullrich password), where 'sullrich' is the login and 'password' is the user's password, the script returns a token that is valid for 5 minutes.
 p3. Open the frontend part of the site in a browser, go to the data entry section https://tz_voroj2.loc/data/put-data
