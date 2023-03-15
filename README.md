@@ -91,9 +91,9 @@ server {
 In the configuration folders backend, frontend, and common, rename the files codeception-local.sample.php, main-local.sample.php, params-local.sample.php, test-local.sample.php, to codeception-local.php, main-local.php, params-local.php, test-local.php.
 Change the configuration settings in these files according to your local configuration.
 
-Run the database migrations using the command: ./yii migrate
-If working on a local computer, add hosts
-If working on a server, add the host's NS server at the registrar
+<p>Run the database migrations using the command: ./yii migrate.</p>
+<p>If working on a local computer, add hosts.</p>
+<p>If working on a server, add the host's NS server at the registrar.</p>
 
 <h1>Project functionality</h1>
 
