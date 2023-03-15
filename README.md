@@ -129,7 +129,6 @@ Then, submit the data.
 	Execute a request.
 <p>In response, a message with an error description and code or a success message is received.</p>
 
-<p>p5. Open the backend part of the site in a browser, authorize with administrator rights, go to the data viewing section https://admin.tz_voroj2.loc/data/view/</p>
-
-    To view the tree structure of a JSON object, click the eye icon. In the viewing mode, it is possible to collapse/expand individual elements.
-    To delete a JSON object, click the trash can icon.
+<p>p5. Open the backend part of the site in a browser, authorize with administrator rights, go to the data viewing section https://admin.tz_voroj2.loc/data/view/<br>
+    To view the tree structure of a JSON object, click the eye icon. In the viewing mode, it is possible to collapse/expand individual elements.<br>
+    To delete a JSON object, click the trash can icon.</p>
